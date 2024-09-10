@@ -28,9 +28,15 @@ public:
 	}
 
 	int level(BinaryNode *node){
-		int nodeHeight = getHeight(node);
-		int totalHeight = getHeight();
-		return totalHeight - nodeHeight + 1;
+		 return getLevelIfFound(node, root, 1);
+	}
+
+	int getLevelIfFound(BinaryNode *node, BinaryNode *cur, int level){
+		if(cur == NULL) return 0;
+		if(node == cur) return level;
+		int levelLeft = getLevelIfFound(node, cur -> getLeft(), level + 1);
+		int levelRight = getLevelIfFound(node, cur -> getRight(), level + 1);
+		return(levelLeft > levelRight)? levelLeft : levelRight;
 	}
 
 	bool isBalanced(){
