@@ -1,6 +1,7 @@
 #pragma once
 #include "BinaryNode.h"
 #include <cmath>
+#include "CircularQueue.h"
 
 class BinaryTree
 {
@@ -62,6 +63,97 @@ public:
 	int pathLength(BinaryNode *node, int depth){
 		if(node == NULL) return 0;
 		return depth + pathLength(node -> getLeft(), depth + 1) + pathLength(node -> getRight(), depth + 1);
+	}
+
+	void reverse(){
+		reverse(root);
+	}
+
+	void reverse(BinaryNode *node){
+		if(node == NULL) return;
+		BinaryNode *left = node->getLeft();
+		BinaryNode *right = node->getRight();
+		node->setLeft(right);
+		node->setRight(left);
+		reverse(node->getLeft());
+		reverse(node->getRight());
+	}
+
+
+	bool isValid(){
+		return isValid(root, this);
+	}
+
+	bool isValid(BinaryNode* node, BinaryTree* tree) {
+    if (node == NULL) {
+        return true;
+    }
+
+	BinaryTree* left = new BinaryTree();
+	left -> setRoot(node -> getLeft());
+
+	BinaryTree* right = new BinaryTree();
+	right -> setRoot(node -> getRight());
+    if (!left -> isDisjointFrom(right)) {
+        return false;
+    }
+    return isValid(node->getLeft(), tree) && isValid(node->getRight(), tree);
+	}
+
+
+
+
+	bool isDisjointFrom(BinaryTree* that){
+		return isDisjointFrom(that, root);
+	}
+
+	bool isDisjointFrom(BinaryTree* that, BinaryNode* node){
+		if(node == NULL || that == NULL){
+			return true;
+		 } 
+		 
+		 if(isIn(that, node)){
+			return false;
+		 }
+
+		 return isDisjointFrom(that, node -> getLeft()) && isDisjointFrom(that, node -> getRight());
+	}
+
+	bool isIn(BinaryTree* that, BinaryNode* node){
+		CircularQueue q;
+		q.enqueue( that ->  getRoot() );
+		while ( !q.isEmpty() ) {
+			BinaryNode* n = q.dequeue();
+			if( n == NULL ) {
+				continue;
+			} else if(n == node){
+				return true;
+			} else {
+				q.enqueue(n->getLeft());
+				q.enqueue(n->getRight());
+			}
+		}
+		return false;
+	}
+
+
+
+
+	void levelorder( ) {
+		printf("\nlevelorder: ");
+		if( !isEmpty() ) {
+			CircularQueue q;
+			q.enqueue( root );
+			while ( !q.isEmpty() ) {
+				BinaryNode* n = q.dequeue();
+				if( n != NULL ) {
+					printf(" [%c] ", n->getData());
+					q.enqueue(n->getLeft ());
+					q.enqueue(n->getRight());
+				}
+			}
+		}
+		printf("\n");
 	}
 
 
