@@ -9,7 +9,7 @@ int sequentialSearch(int arr[], int size, int key);
 
 int main()
 {
-	  std::srand(static_cast<unsigned int>(std::time(0)));
+	srand(static_cast<unsigned int>(time(0)));
 	for(int i = 1; i <= 1000; i++){
 		int n = 10000 * i;
 		int arr[n];

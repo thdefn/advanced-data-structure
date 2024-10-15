@@ -10,7 +10,7 @@ int main()
 	
 	randomGraph(&g, 5, 7);
 
-	printf("Graph creation completed\n");
+	printf("인접 행렬로 표현한 그래프\n");
 	g.display();
 
 	return 0;
@@ -19,7 +19,7 @@ int main()
 
 void randomGraph(AdjMatGraph *g, int numVtx, int numEdge){
 	if(numEdge < numVtx - 1 || numEdge > numVtx * (numVtx - 1) / 2) {
-		   printf("Error: Exceeds the possible number of edges\n");
+		printf("가능한 간선 개수 error\n");
 		return;
 	}
 
